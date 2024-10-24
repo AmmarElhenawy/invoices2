@@ -32,10 +32,7 @@
                             <div class="card mg-b-20">
                                 <div class="card-header pb-0">
                                     <div class="d-flex justify-content-between">
-                                        <h4 class="card-title mg-b-0">Bordered Table</h4>
-                                        <i class="mdi mdi-dots-horizontal text-gray"></i>
-                                    </div>
-                                    <p class="tx-12 tx-gray-500 mb-2">Example of Valex Bordered Table.. <a href="">Learn more</a></p>
+
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
@@ -56,22 +53,22 @@
                                                     <th class="border-bottom-0">ملاحظات</th>
                                                 </tr>
                                             </thead>
-<tbody>
-    <tr>
-        <td>1</td>
-        <td>323862</td>
-        <td>2020-06-13</td>
-        <td>2020-12-12</td>
-        <td>cc</td>
-        <td>بنك اهلي</td>
-        <td>4020</td>
-        <td>10%</td>
-        <td>2500</td>
-        <td>2600</td>
-        <td>غير مدفوعه</td>
-        <td></td>
-    </tr>
-</tbody>
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>323862</td>
+                                                    <td>2020-06-13</td>
+                                                    <td>2020-12-12</td>
+                                                    <td>cc</td>
+                                                    <td>بنك اهلي</td>
+                                                    <td>4020</td>
+                                                    <td>10%</td>
+                                                    <td>2500</td>
+                                                    <td>2600</td>
+                                                    <td>غير مدفوعه</td>
+                                                    <td></td>
+                                                </tr>
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -93,8 +90,8 @@
 			</div>
 			<!-- Container closed -->
 		</div>
-		<!-- main-content closed -->
-@endsection
+        <!-- main-content closed -->
+        @endsection
 @section('js')
 <!-- Internal Data tables -->
 <script src="{{URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js')}}"></script>
@@ -115,4 +112,6 @@
 <script src="{{URL::asset('assets/plugins/datatable/js/responsive.bootstrap4.min.js')}}"></script>
 <!--Internal  Datatable js -->
 <script src="{{URL::asset('assets/js/table-data.js')}}"></script>
+<!-- Internal Modal js-->
+<script src="{{URL::asset('assets/js/modal.js')}}"></script>
 @endsection
