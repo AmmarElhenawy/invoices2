@@ -1,6 +1,8 @@
 @extends('layouts.master')
 @section('css')
 <!-- Internal Data table css -->
+<link href="{{URL::asset('assets/plugins/datatable/css/bootstrap.min.css')}}" rel="stylesheet" />
+<link href="{{URL::asset('assets/plugins/datatable/css/bootstrap.css')}}" rel="stylesheet" />
 <link href="{{URL::asset('assets/plugins/datatable/css/dataTables.bootstrap4.min.css')}}" rel="stylesheet" />
 <link href="{{URL::asset('assets/plugins/datatable/css/buttons.bootstrap4.min.css')}}" rel="stylesheet">
 <link href="{{URL::asset('assets/plugins/datatable/css/responsive.bootstrap4.min.css')}}" rel="stylesheet" />
@@ -22,6 +24,44 @@
 <!-- breadcrumb -->
 @endsection
 @section('content')
+
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+
+@if (session()->has('delete'))
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>{{session()->get('delete')}}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+
+@if (session()->has('add'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>{{session()->get('add')}}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+@if (session()->has('edit'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>{{session()->get('edit')}}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+
 <!-- row -->
 <div class="row">
 
@@ -39,34 +79,33 @@
                                         <thead>
                                             <tr>
                                                 <th class="border-bottom-0">#</th>
-                                                <th class="border-bottom-0">رقم الفاتوره</th>
-                                                <th class="border-bottom-0">تاريخ الفاتوره</th>
-                                                <th class="border-bottom-0">تاريخ الاستحقاق</th>
-                                                <th class="border-bottom-0">المنتج</th>
-                                                <th class="border-bottom-0">القسم</th>
-                                                <th class="border-bottom-0">الخصم</th>
-                                                <th class="border-bottom-0">نسبه الضريبه</th>
-                                                <th class="border-bottom-0">قيمه الضريبه</th>
-                                                <th class="border-bottom-0">الاجمالي</th>
-                                                <th class="border-bottom-0">الحاله</th>
-                                                <th class="border-bottom-0">ملاحظات</th>
+                                                <th class="border-bottom-0">اسم القسم</th>
+                                                <th class="border-bottom-0">الوصف</th>
+                                                <th class="border-bottom-0">العمليات</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $i=0 ?>
+                                            @foreach ($sec as $s)
+                                            <?php $i++ ?>
                                             <tr>
-                                                <td>1</td>
-                                                <td>323862</td>
-                                                <td>2020-06-13</td>
-                                                <td>2020-12-12</td>
-                                                <td>cc</td>
-                                                <td>بنك اهلي</td>
-                                                <td>4020</td>
-                                                <td>10%</td>
-                                                <td>2500</td>
-                                                <td>2600</td>
-                                                <td>غير مدفوعه</td>
-                                                <td></td>
+                                                <td>{{$i}}</td>
+                                                <td>{{$s->section_name}}</td>
+                                                <td>{{$s->description}}</td>
+                                                <td>
+                                                    <a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"
+                                                    data-id="{{ $s->id }}" data-section_name="{{ $s->section_name }}"
+                                                    data-description="{{ $s->description }}"
+                                                    data-toggle="modal" href="#exampleModal2"
+                                                    title="تعديل"><i class="las la-pen"></i></a>
+
+                                                    <a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"
+                                                    data-id="{{ $s->id }}" data-section_name="{{ $s->section_name }}" data-toggle="modal"
+                                                    href="#modaldemo7" title="حذف"><i class="las la-trash"></i></a>
+
+                                            </td>
                                             </tr>
+                                                @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -121,6 +160,65 @@
 			</div>
 		</div>
 		<!-- End Basic modal -->
+            <!-- edit -->
+    <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">تعديل القسم</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form action="sections/update" method="post" autocomplete="off">
+                    {{ method_field('patch') }}
+                    {{ csrf_field() }}
+                    <div class="form-group">
+                        <input type="hidden" name="id" id="id" value="">
+                        <label for="recipient-name" class="col-form-label">اسم القسم:</label>
+                        <input class="form-control" name="section_name" id="section_name" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">ملاحظات:</label>
+                        <textarea class="form-control" id="description" name="description"></textarea>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">تاكيد</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">اغلاق</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- delete -->
+<div class="modal" id="modaldemo7">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content modal-content-demo">
+            <div class="modal-header">
+                <h6 class="modal-title">حذف القسم</h6><button aria-label="Close" class="close" data-dismiss="modal"
+                    type="button"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <form action="sections/destroy" method="post">
+                {{ method_field('delete') }}
+                {{ csrf_field() }}
+                <div class="modal-body">
+                    <p>هل انت متاكد من عملية الحذف ؟</p><br>
+                    <input type="hidden" name="id" id="id" value="">
+                    <input class="form-control" name="section_name" id="section_name" type="text" readonly>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
+                    <button type="submit" class="btn btn-danger">تاكيد</button>
+                </div>
+        </div>
+        </form>
+    </div>
+</div>
 		<!-- main-content closed -->
 @endsection
 @section('js')
@@ -145,4 +243,31 @@
 <script src="{{URL::asset('assets/js/table-data.js')}}"></script>
 <!-- Internal Modal js-->
 <script src="{{URL::asset('assets/js/modal.js')}}"></script>
+
+{{-- js form edit --}}
+<script>
+    $('#exampleModal2').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget)
+        var id = button.data('id')
+        var section_name = button.data('section_name')
+        var description = button.data('description')
+        var modal = $(this)
+        modal.find('.modal-body #id').val(id);
+        modal.find('.modal-body #section_name').val(section_name);
+        modal.find('.modal-body #description').val(description);
+    })
+</script>
+{{-- js form destroy --}}
+<script>
+    $('#modaldemo7').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget)
+        var id = button.data('id')
+        var section_name = button.data('section_name')
+        var modal = $(this)
+        modal.find('.modal-body #id').val(id);
+        modal.find('.modal-body #section_name').val(section_name);
+    })
+</script>
+
+
 @endsection
