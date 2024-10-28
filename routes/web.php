@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Invoice2Controller;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\ProController;
 // use App\Http\Controllers\AdminController;
 // use App\Http\Controllers\HomeController;
 

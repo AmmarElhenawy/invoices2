@@ -15,7 +15,7 @@ class SectionController extends Controller
     {
         $sec=section::all();
         return view(
-                'section.section',compact('sec')
+                'section.section',compact('sec',)
         );
     }
 

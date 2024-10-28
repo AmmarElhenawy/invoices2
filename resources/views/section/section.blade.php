@@ -160,8 +160,9 @@
 			</div>
 		</div>
 		<!-- End Basic modal -->
-            <!-- edit -->
-    <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+
+        <!-- edit -->
+<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -193,7 +194,7 @@
             </form>
         </div>
     </div>
-    </div>
+</div>
 
 <!-- delete -->
 <div class="modal" id="modaldemo7">
