@@ -21,5 +21,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::resource('invoices', Invoice2Controller::class);
 Route::resource('sections', SectionController::class);
 Route::resource('products', ProductsController::class);
+Route::get('/section/{id}', 'Invoice2Controller@getproducts');
 Route::get('/{page}', 'App\Http\Controllers\AdminController@index');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

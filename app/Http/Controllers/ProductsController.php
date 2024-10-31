@@ -88,7 +88,7 @@ class ProductsController extends Controller
         return back();
     }
 
-    /**
+    /**  
      * Remove the specified resource from storage.
      */
     public function destroy(Request $request)

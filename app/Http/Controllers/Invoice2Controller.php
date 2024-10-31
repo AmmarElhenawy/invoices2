@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\section;
 use App\Models\invoice2;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+
+use function Pest\Laravel\json;
 
 class Invoice2Controller extends Controller
 {
@@ -20,7 +24,8 @@ class Invoice2Controller extends Controller
      */
     public function create()
     {
-        //
+        $sections=section::all();
+        return view('invoices.add-invoices',compact('sections'));
     }
 
     /**
@@ -61,5 +66,10 @@ class Invoice2Controller extends Controller
     public function destroy(invoice2 $invoice2)
     {
         //
+    }
+    public function getproducts($id)
+    {
+        $products = DB::table("products")->where("section_id", $id)->pluck("Product_name", "id");
+        return json_encode($products);
     }
 }

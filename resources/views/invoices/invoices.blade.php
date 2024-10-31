@@ -25,16 +25,30 @@
                     @section('content')
                     <!-- row opened -->
                     <div class="row row-sm">
-
-
                         <!--div-->
                         <div class="col-xl-12">
                             <div class="card mg-b-20">
                                 <div class="card-header pb-0">
                                     <div class="d-flex justify-content-between">
 
-                                </div>
-                                <div class="card-body">
+                                    </div>
+                                    <div class="card-body">
+                                    {{-- button --}}
+                                    <div class="d-flex justify-content-between">
+                                        <div class="col-sm-6 col-md-4 col-xl-3">
+                                            <a class="modal-effect btn btn-outline-primary btn-block" data-effect="effect-scale" data-toggle="modal" href="#modaldemo8">اضافه فاتورة</a>
+                                        </div>
+                                    </div>
+                                    {{-- button --}}
+                                    <div class="d-flex justify-content-between">
+                                        <div class="col-sm-6 col-md-4 col-xl-3">
+                                            <a href="{{ route('invoices.create') }}" class="btn btn-outline-danger btn-block">
+                                                اضافه فاتورة
+                                            </a>
+                                        </div>
+                                    </div>
+
+
                                     <div class="table-responsive">
                                         <table id="example1" class="table key-buttons text-md-nowrap">
                                             <thead>
@@ -75,6 +89,7 @@
                             </div>
                         </div>
                         <!--/div-->
+        <!-- Basic modal -->
 
                         <!--div-->
 
@@ -114,4 +129,30 @@
 <script src="{{URL::asset('assets/js/table-data.js')}}"></script>
 <!-- Internal Modal js-->
 <script src="{{URL::asset('assets/js/modal.js')}}"></script>
+<script>
+    $(document).ready(function() {
+        $('select[name="Section"]').on('change', function() {
+            var SectionId = $(this).val();
+            if (SectionId) {
+                $.ajax({
+                    url: "{{ URL::to('sections') }}/" + SectionId,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        $('select[name="product"]').empty();
+                        $.each(data, function(key, value) {
+                            $('select[name="product"]').append('<option value="' +
+                                value + '">' + value + '</option>');
+                        });
+                    },
+                });
+
+            } else {
+                console.log('AJAX load did not work');
+            }
+        });
+
+    });
+
+</script>
 @endsection
