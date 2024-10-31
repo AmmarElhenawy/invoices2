@@ -74,9 +74,8 @@
                         <div class="row">
                             <div class="col">
                                 <label for="inputName" class="control-label">القسم</label>
-                                <select name="Section" class="form-control SlectBox" onclick="console.log($(this).val())"
-                                    onchange="console.log('change is firing')">
-                                    <!--placeholder-->
+                                <select name="section_name" class="form-control SlectBox" id="section_id">
+                                    <!-- placeholder -->
                                     <option value="" selected disabled>حدد القسم</option>
                                     @foreach ($sections as $section)
                                         <option value="{{ $section->id }}"> {{ $section->section_name }}</option>
@@ -86,9 +85,11 @@
 
                             <div class="col">
                                 <label for="inputName" class="control-label">المنتج</label>
-                                <select id="product" name="product" class="form-control">
+                                <select id="product_id" name="product_id" class="form-control">
+                                    <option value="" selected disabled>حدد المنتج</option>
                                 </select>
                             </div>
+
 
                             <div class="col">
                                 <label for="inputName" class="control-label">مبلغ التحصيل</label>
@@ -125,6 +126,7 @@
                                     <option value="" selected disabled>حدد نسبة الضريبة</option>
                                     <option value=" 5%">5%</option>
                                     <option value="10%">10%</option>
+                                    <option value="15">15%</option>
                                 </select>
                             </div>
 
@@ -212,9 +214,11 @@
 
     </script>
 
-    <script>
+{{-- ajax product/section 2 code work --}}
+    {{-- 1 --}}
+    {{-- <script>
         $(document).ready(function() {
-            $('select[name="Section"]').on('change', function() {
+            $('select[name="section_name"]').on('change', function() {
                 var SectionId = $(this).val();
                 if (SectionId) {
                     $.ajax({
@@ -222,9 +226,9 @@
                         type: "GET",
                         dataType: "json",
                         success: function(data) {
-                            $('select[name="product"]').empty();
+                            $('select[name="product_id"]').empty();
                             $.each(data, function(key, value) {
-                                $('select[name="product"]').append('<option value="' +
+                                $('select[name="product_id"]').append('<option value="' +
                                     value + '">' + value + '</option>');
                             });
                         },
@@ -237,8 +241,35 @@
 
         });
 
+    </script> --}}
+    {{-- 2 --}}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#section_id').on('change', function () {
+                var sectionId = $(this).val();
+                if (sectionId) {
+                    $.ajax({
+                        url: '/section/' + sectionId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function (data) {
+                            $('#product_id').empty();
+                            $('#product_id').append('<option value="" selected disabled>حدد المنتج</option>');
+                            $.each(data, function (key, value) {
+                                $('#product_id').append('<option value="' + key + '">' + value + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    console.log('AJAX load did not work');
+                    $('#product_id').empty();
+                    $('#product_id').append('<option value="" selected disabled>حدد المنتج</option>');
+                }
+            });
+        });
     </script>
 
+    {{-- end product/section ajax --}}
 
     <script>
         function myFunction() {

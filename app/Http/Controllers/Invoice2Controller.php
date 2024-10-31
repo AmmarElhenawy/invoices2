@@ -67,9 +67,15 @@ class Invoice2Controller extends Controller
     {
         //
     }
+    // public function getproducts($id)
+    // {
+    //     $products = DB::table("products")->where("section_id", $id)->pluck("product_name", "id");
+    //     return json_encode($products);
+    // }
     public function getproducts($id)
-    {
-        $products = DB::table("products")->where("section_id", $id)->pluck("Product_name", "id");
-        return json_encode($products);
-    }
+{
+    $products = DB::table("products")->where("section_id", $id)->pluck("product_name", "id");
+    return response()->json($products);
+}
+
 }

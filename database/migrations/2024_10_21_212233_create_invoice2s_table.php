@@ -18,8 +18,10 @@ return new class extends Migration
             $table->string('rte_vat');
             $table->string('status');
             $table->string('section');
-            $table->string('discount');
             $table->integer('value_status');//for search
+            $table->decimal('amount_collection');
+            $table->decimal('amount_commission');
+            $table->decimal('discount');
             $table->decimal('value_vat');
             $table->decimal('total');
             $table->date('invoice_date');

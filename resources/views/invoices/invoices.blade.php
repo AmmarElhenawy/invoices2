@@ -33,16 +33,11 @@
 
                                     </div>
                                     <div class="card-body">
+
                                     {{-- button --}}
                                     <div class="d-flex justify-content-between">
                                         <div class="col-sm-6 col-md-4 col-xl-3">
-                                            <a class="modal-effect btn btn-outline-primary btn-block" data-effect="effect-scale" data-toggle="modal" href="#modaldemo8">اضافه فاتورة</a>
-                                        </div>
-                                    </div>
-                                    {{-- button --}}
-                                    <div class="d-flex justify-content-between">
-                                        <div class="col-sm-6 col-md-4 col-xl-3">
-                                            <a href="{{ route('invoices.create') }}" class="btn btn-outline-danger btn-block">
+                                            <a href="{{ route('invoices.create') }}" class="btn btn-outline-primary btn-block">
                                                 اضافه فاتورة
                                             </a>
                                         </div>
