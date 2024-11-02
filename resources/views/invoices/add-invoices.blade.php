@@ -74,7 +74,7 @@
                         <div class="row">
                             <div class="col">
                                 <label for="inputName" class="control-label">القسم</label>
-                                <select name="section_name" class="form-control SlectBox" id="section_id">
+                                <select name="section_id" class="form-control SlectBox" id="section_id">
                                     <!-- placeholder -->
                                     <option value="" selected disabled>حدد القسم</option>
                                     @foreach ($sections as $section)

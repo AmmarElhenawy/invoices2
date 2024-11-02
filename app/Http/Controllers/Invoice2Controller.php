@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\section;
 use App\Models\invoice2;
+use App\Models\invoiceDetail;
+use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -33,7 +36,50 @@ class Invoice2Controller extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request->all()); // تحقق من وصول كافة البيانات
+
+        // $request->validate([
+        //     'section_id' => 'required|exists:sections,id', // تأكد من أن القسم موجود
+        // ]);
+        invoice2::create([
+            'invoice_number' => $request->invoice_number,
+            'invoice_date' => $request->invoice_Date,
+            'due_date' => $request->Due_date,
+            'section_id' => $request->section_id,
+            'product' => $request->product_id,
+            'amount_collection' => $request->Amount_collection,
+            'amount_commission' => $request->Amount_Commission,
+            'discount' => $request->Discount,
+            'rate_vat' => $request->Rate_VAT,
+            'value_vat' => $request->Value_VAT,
+            'total' => $request->Total,
+            'status' => 'غير مدفوعه',//defult
+            'value_status' => 2,//search by it
+            'note' => $request->note,
+        ]);
+        $invoice_id=invoice2::latest()->first()->id;
+        invoiceDetail::create([
+            'id_invoice' => $invoice_id,
+            'invoice_number' => $request->invoice_number,
+            'product' => $request->product_id,
+            'section' => $request->section_id,
+            'status' =>  'غير مدفوعه',
+            'status_value' =>  2,
+            'note' => $request->note,
+            'user'=> (Auth::user()->name),
+        ]);
+
+
+
+
+
+
+
+
+
+
+        // session()-> flash('add','تم اضافه المنتج بنجاح');
+        // return redirect('invoices');
     }
 
     /**

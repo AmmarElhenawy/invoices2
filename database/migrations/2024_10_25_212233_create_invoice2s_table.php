@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('invoice2s', function (Blueprint $table) {
             $table->id();
             $table->string('user');
-            $table->string('invoice_num');
-            $table->string('rte_vat');
+            $table->string('invoice_number');
+            $table->string('rate_vat');
             $table->string('status');
-            $table->string('section');
+            $table->string('product');
+            $table->unsignedBigInteger('section_id');
+            $table->foreign('section_id')->references('id')->on('sections')->onDelete('cascade');
             $table->integer('value_status');//for search
             $table->decimal('amount_collection');
             $table->decimal('amount_commission');

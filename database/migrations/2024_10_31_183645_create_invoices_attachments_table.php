@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('invoices_attachments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('invoice_id')->nullable();
-            $table->foreign('invoice_id')->references('id')->on('invoices2');
+            $table->foreign('invoice_id')->references('id')->on('invoice2s');
             $table->string('file_name');
             $table->string('create_by');
             $table->string('invoice_number');
