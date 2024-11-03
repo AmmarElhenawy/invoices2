@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\invoices_attachment;
 use App\Models\section;
 use App\Models\invoice2;
 use App\Models\invoiceDetail;
@@ -19,7 +20,8 @@ class Invoice2Controller extends Controller
      */
     public function index()
     {
-        return view('invoices.invoices');
+        $invoice=invoice2::all();
+        return view('invoices.invoices',compact('invoice'));
     }
 
     /**
@@ -64,22 +66,28 @@ class Invoice2Controller extends Controller
             'product' => $request->product_id,
             'section' => $request->section_id,
             'status' =>  'غير مدفوعه',
-            'status_value' =>  2,
+            'value_status'=>2,
             'note' => $request->note,
             'user'=> (Auth::user()->name),
         ]);
+        if ($request->hasFile('pic')) {
+        $invoice_id=invoice2::latest()->first()->id;
+            $image=$request->file('pic');
+            $file_name=$image->getClientOriginalName();
+            $invoice_number=$request->invoice_number;
+            $attach=new invoices_attachment();
+            $attach->file_name=$file_name;
+            $attach->invoice_number=$invoice_number;
+            $attach->invoice_id=$invoice_id;
+            $attach->create_by=(Auth::user()->name);
+            $attach->save();
 
-
-
-
-
-
-
-
-
-
-        // session()-> flash('add','تم اضافه المنتج بنجاح');
-        // return redirect('invoices');
+            $imageName=$request->pic->getClientOriginalName();
+            // $request->pic->move(public_path('attachments/',$invoice_number),$imageName);
+            $image->move(public_path("attachments/$invoice_number"), $file_name);
+        }
+        session()-> flash('add','تم اضافه المنتج بنجاح');
+        return redirect('invoices');
     }
 
     /**

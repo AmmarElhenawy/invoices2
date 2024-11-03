@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 
 class invoice2 extends Model
 {
@@ -22,4 +24,9 @@ class invoice2 extends Model
         'value_status',
         'note',
     ];
+    public function sec_id(): BelongsTo
+    {
+        return $this->belongsTo(section::class, 'section_id');
+        // return $this->belongsTo( 'App\section');
+    }
 }

@@ -20,19 +20,28 @@
 				<!-- breadcrumb -->
 @endsection
 @section('content')
-				<!-- row -->
-				<div class="row">
-                    @section('content')
-                    <!-- row opened -->
-                    <div class="row row-sm">
-                        <!--div-->
-                        <div class="col-xl-12">
-                            <div class="card mg-b-20">
-                                <div class="card-header pb-0">
-                                    <div class="d-flex justify-content-between">
 
-                                    </div>
-                                    <div class="card-body">
+<!-- row -->
+<div class="row">
+    @section('content')
+    <!-- row opened -->
+    <div class="row row-sm">
+        <!--div-->
+        <div class="col-xl-12">
+            <div class="card mg-b-20">
+                <div class="card-header pb-0">
+                    <div class="d-flex justify-content-between">
+
+                    </div>
+                    <div class="card-body">
+                                        @if (session()->has('add'))
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            <strong>{{session()->get('add')}}</strong>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        @endif
 
                                     {{-- button --}}
                                     <div class="d-flex justify-content-between">
@@ -63,20 +72,38 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                @php
+                                                    $i=0;
+                                                @endphp
+                                                @foreach ($invoice as $inv)
+                                                @php
+                                                    $i++;
+                                                @endphp
                                                 <tr>
-                                                    <td>1</td>
-                                                    <td>323862</td>
-                                                    <td>2020-06-13</td>
-                                                    <td>2020-12-12</td>
-                                                    <td>cc</td>
-                                                    <td>بنك اهلي</td>
-                                                    <td>4020</td>
-                                                    <td>10%</td>
-                                                    <td>2500</td>
-                                                    <td>2600</td>
-                                                    <td>غير مدفوعه</td>
-                                                    <td></td>
+                                                    <td>{{$i}}</td>
+                                                    <td>{{$inv->invoice_number}}</td>
+                                                    <td>{{$inv->invoice_date}}</td>
+                                                    <td>{{$inv->due_date}}</td>
+                                                    <td>{{$inv->product}}</td>
+                                                    <td>
+                                                        <a href="{{url ('invoiceDetail')}}/{{$inv->section_id}}"> {{$inv->sec_id->section_name}}</a>
+                                                        </td>
+                                                    <td>{{$inv->discount}}</td>
+                                                    <td>{{$inv->rate_vat}}</td>
+                                                    <td>{{$inv->value_vat}}</td>
+                                                    <td>{{$inv->total}}</td>
+                                                    <td>
+                                                        @if($inv->value_status == 1)
+                                                        <span class="text-success">{{$inv->status}}</span>
+                                                        @elseif($inv->value_status == 2)
+                                                        <span class="text-danger">{{$inv->status}}</span>
+                                                        @else
+                                                        <span class="text-warning">{{$inv->status}}. {{$inv->vlaue_status}}</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>{{$inv->note}}</td>
                                                 </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
