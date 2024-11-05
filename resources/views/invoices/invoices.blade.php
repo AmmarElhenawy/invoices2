@@ -84,9 +84,9 @@
                                                     <td>{{$inv->invoice_number}}</td>
                                                     <td>{{$inv->invoice_date}}</td>
                                                     <td>{{$inv->due_date}}</td>
-                                                    <td>{{$inv->product}}</td>
+                                                    <td>{{$inv->prod_id->product_name}}</td>
                                                     <td>
-                                                        <a href="{{url ('invoiceDetail')}}/{{$inv->section_id}}"> {{$inv->sec_id->section_name}}</a>
+                                                        <a href="{{url ('invoiceDetail')}}/{{$inv->id}}"> {{$inv->sec_id->section_name}}</a>
                                                         </td>
                                                     <td>{{$inv->discount}}</td>
                                                     <td>{{$inv->rate_vat}}</td>

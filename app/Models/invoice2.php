@@ -29,4 +29,9 @@ class invoice2 extends Model
         return $this->belongsTo(section::class, 'section_id');
         // return $this->belongsTo( 'App\section');
     }
+    public function prod_id(): BelongsTo
+    {
+        return $this->belongsTo(products::class, 'product');
+        // return $this->belongsTo( 'App\section');
+    }
 }

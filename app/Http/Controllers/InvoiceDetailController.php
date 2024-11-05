@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\invoice2;
+use App\Models\invoices_attachment;
+
+use Illuminate\Support\Facades\Storage;
+
 use App\Models\section;
 use App\Models\products;
 // use App\Models\invoice_details;
@@ -50,27 +54,16 @@ class InvoiceDetailController extends Controller
      */
     public function edit($id)
     {
-        // جلب القسم المطلوب بناءً على المعرف
-        $section = Section::find($id);
+        //{first} bec just one row one inv id
+        //can search by inv without loop
+        $inv=invoice2::where('id',$id)->first();
 
-        // التحقق من وجود القسم
-        if (!$section) {
-            return redirect()->back()->withErrors(['error' => 'القسم غير موجود']);
-        }
+        //{get} bec invoice id will have more than one details/attachmen id
+        //must be in loop like foreach
+        $inv_details=InvoiceDetail::where('id_invoice',$id)->get();
+        $inv_attachment=invoices_attachment::where('invoice_id',$id)->get();
 
-        // جلب بيانات التفاصيل والفاتورة بناءً على القسم
-        $invoiceDetail = InvoiceDetail::where('section', $id)->first();
-        $invoice = Invoice2::where('section_id', $id)->first();
 
-        // التحقق من وجود بيانات الفاتورة والتفاصيل
-        if (!$invoiceDetail || !$invoice) {
-            return redirect()->back()->withErrors(['error' => 'التفاصيل أو الفاتورة غير موجودة']);
-        }
-
-        // استخراج الحقول المطلوبة
-        $sec_name = $section->section_name;
-        $desc = $invoiceDetail->status;
-        $cr_by = $invoice->invoice_number;
 
         // <samir code>
         // $sec_name = invoice2::where('id',$id)->first();
@@ -80,7 +73,8 @@ class InvoiceDetailController extends Controller
 
 
         // تمرير المتغيرات إلى العرض
-        return view('invoices.invoiceDetail', compact('sec_name', 'desc', 'cr_by'));
+        return view('invoices.invoiceDetail', compact('inv', 'inv_details', 'inv_attachment'));
+        // return $id;
     }
 
 
@@ -95,8 +89,35 @@ class InvoiceDetailController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(InvoiceDetail $invoiceDetail)
+    public function destroy(Request $request)
     {
-        //
+        $invoices =invoices_attachment::findOrFail($request->id);
+        $invoices->delete();
+        Storage::disk('public_uploads')->delete($request->invoice_number.'/'.$request->file_name);
+        session()->flash('delete', 'تم حذف المرفق بنجاح');
+        return back();
+    }
+
+    public function view_attach($invoice_number, $file_name)
+    {
+        $filePath = "$invoice_number/$file_name";
+
+        if (Storage::disk('public_uploads')->exists($filePath)) {
+            return response()->file(Storage::disk('public_uploads')->path($filePath));
+        } else {
+            return abort(404, 'File not found.');
+        }
+    }
+
+
+    public function download_attach($invoice_number, $file_name)
+    {
+        $filePath = Storage::disk('public_uploads')->path("$invoice_number/$file_name");
+
+        if (Storage::disk('public_uploads')->exists("$invoice_number/$file_name")) {
+            return response()->download($filePath);
+        } else {
+            return abort(404, 'File not found.');
+        }
     }
 }

@@ -28,6 +28,9 @@ Route::resource('products', ProductsController::class);
 Route::get('/section/{id}', [Invoice2Controller::class, 'getproducts']);
 
 Route::get('/invoiceDetail/{id}', [InvoiceDetailController::class, 'edit']);
+Route::get('/view_file/{invoice_number}/{file_name}', [InvoiceDetailController::class, 'view_attach'])->name('view_file');
+Route::get('/download/{invoice_number}/{file_name}', [InvoiceDetailController::class, 'download_attach'])->name('download');
+Route::delete('delete_file', [InvoiceDetailController::class, 'destroy'])->name('delete_file');
 
 Route::get('/{page}', 'App\Http\Controllers\AdminController@index');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
