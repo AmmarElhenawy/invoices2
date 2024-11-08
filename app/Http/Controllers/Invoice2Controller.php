@@ -101,17 +101,38 @@ class Invoice2Controller extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(invoice2 $invoice2)
+    public function edit($id)
     {
-        //
+        $invoice=invoice2::where('id',$id)->first();
+        $section= section::all();
+        return view('invoices.edit-invoice',compact('invoice','section'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, invoice2 $invoice2)
+    public function update(Request $request)
     {
-        //
+        // return $request;
+        $inv=invoice2::findOrFail($request->id);
+        $inv->update([
+            'invoice_number' => $request->invoice_number,
+            'invoice_date' => $request->invoice_date,
+            'due_date' => $request->due_date,
+            'section_id' => $request->section_id,
+            'product' => $request->product,
+            'amount_collection' => $request->amount_collection,
+            'amount_commission' => $request->amount_commission,
+            'discount' => $request->discount,
+            'rate_vat' => $request->rate_vat,
+            'value_vat' => $request->value_vat,
+            'total' => $request->total,
+            'status' => 'غير مدفوعه',//defult
+            'value_status' => 2,//search by it
+            'note' => $request->note,
+        ]);
+        session()->flash('edit','تم تعديل الفاتوره ');
+        return redirect('/invoices');
     }
 
     /**

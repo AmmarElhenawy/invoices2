@@ -42,6 +42,14 @@
                                             </button>
                                         </div>
                                         @endif
+                                        @if (session()->has('edit'))
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            <strong>{{session()->get('edit')}}</strong>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        @endif
 
                                     {{-- button --}}
                                     <div class="d-flex justify-content-between">
@@ -69,6 +77,7 @@
                                                     <th class="border-bottom-0">الاجمالي</th>
                                                     <th class="border-bottom-0">الحاله</th>
                                                     <th class="border-bottom-0">ملاحظات</th>
+                                                    <th class="border-bottom-0">العمليات</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -102,6 +111,16 @@
                                                         @endif
                                                     </td>
                                                     <td>{{$inv->note}}</td>
+                                                    <td><div class="dropdown dropup">
+                                                        <button aria-expanded="false" aria-haspopup="true" class=" ripple btn-secondary"
+                                                        data-toggle="dropdown" type="button">العمليات <i class="fas fa-caret-down ml-1"></i></button>
+                                                        <div class="dropdown-menu tx-3">
+                                                            <a class="dropdown-item" href="{{url('edit_invoice')}}/{{$inv->id}}">تعديل</a>
+                                                            <a class="dropdown-item" href="#">Another action</a>
+                                                            <a class="dropdown-item" href="#">Something else here</a>
+                                                        </div>
+                                                    </div>
+                                                    </td>
                                                 </tr>
                                                 @endforeach
                                             </tbody>
