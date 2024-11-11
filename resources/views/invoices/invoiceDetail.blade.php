@@ -92,7 +92,15 @@
                                                         <th>الاجمالي مع الضريبه</th>
                                                         <td>{{$inv->total}}</td>
                                                         <th>الحاله الحاليه</th>
-                                                        <td class="btn btn-danger" >{{$inv->status}}</td>
+                                                        <td>
+                                                            @if($inv->value_status == 1)
+                                                                <span class="btn btn-success">{{ $inv->status }}</span>
+                                                            @elseif($inv->value_status == 2)
+                                                                <span class="btn btn-danger">{{ $inv->status }}</span>
+                                                            @else
+                                                                <span class="btn btn-warning">{{ $inv->status }}</span>
+                                                            @endif
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <th>المستخدم</th>
@@ -139,7 +147,15 @@
                                                         <td>{{$invD->invoice_number}}</td>
                                                         <td>{{ $invD->prod_id ? $invD->prod_id->product_name : 'N/A' }}</td>
                                                         <td>{{ $invD->sec_id ? $invD->sec_id->section_name : 'N/A' }}</td>
-                                                        <td class="text-danger">{{$invD->status}}</td>
+                                                        <td>
+                                                            @if($invD->value_status == 1)
+                                                                <span class="text-success">{{ $invD->status }}</span>
+                                                            @elseif($inv->value_status == 2)
+                                                                <span class="text-danger">{{ $invD->status }}</span>
+                                                            @else
+                                                                <span class="text-warning">{{ $invD->status }}</span>
+                                                            @endif
+                                                        </td>
                                                         <td>{{$invD->updated_at}}</td>
                                                         <td>{{$invD->note}}</td>
                                                         <td>{{$invD->user}}</td>

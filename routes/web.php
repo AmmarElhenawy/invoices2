@@ -28,9 +28,12 @@ Route::resource('invoiceAttachment', InvoicesAttachmentController::class);
 // Route::get('/section/{id}', 'Invoice2Controller@getproducts');
 
 Route::get('/section/{id}', [Invoice2Controller::class, 'getproducts']);
-Route::get('/edit_invoice/{id}', [Invoice2Controller::class, 'edit']);
 // Route::patch('/invoices/update', [Invoice2Controller::class, 'update']);
+Route::get('/edit_invoice/{id}', [Invoice2Controller::class, 'edit']);
+Route::get('/status_invoice/{id}', [Invoice2Controller::class, 'show']);
 Route::patch('invoices/update/{id}', [Invoice2Controller::class, 'update'])->name('invoices.update');
+Route::delete('invoices/destroy/{id}', [Invoice2Controller::class, 'destroy'])->name('invoices.destroy');
+Route::post('status_update/{id}', [Invoice2Controller::class, 'status_update'])->name('status_update');
 
 Route::get('/invoiceDetail/{id}', [InvoiceDetailController::class, 'edit']);
 Route::get('/view_file/{invoice_number}/{file_name}', [InvoiceDetailController::class, 'view_attach'])->name('view_file');

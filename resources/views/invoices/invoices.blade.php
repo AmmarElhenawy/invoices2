@@ -26,6 +26,22 @@
     @section('content')
     <!-- row opened -->
     <div class="row row-sm">
+        @if (session()->has('delete'))
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>{{session()->get('delete')}}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+        @if (session()->has('status'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>{{session()->get('status')}}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
         <!--div-->
         <div class="col-xl-12">
             <div class="card mg-b-20">
@@ -103,21 +119,24 @@
                                                     <td>{{$inv->total}}</td>
                                                     <td>
                                                         @if($inv->value_status == 1)
-                                                        <span class="text-success">{{$inv->status}}</span>
+                                                            <span class="text-success">{{ $inv->status }}</span>
                                                         @elseif($inv->value_status == 2)
-                                                        <span class="text-danger">{{$inv->status}}</span>
+                                                            <span class="text-danger">{{ $inv->status }}</span>
                                                         @else
-                                                        <span class="text-warning">{{$inv->status}}. {{$inv->vlaue_status}}</span>
+                                                            <span class="text-warning">{{ $inv->status }}</span>
                                                         @endif
                                                     </td>
+
                                                     <td>{{$inv->note}}</td>
                                                     <td><div class="dropdown dropup">
                                                         <button aria-expanded="false" aria-haspopup="true" class=" ripple btn-secondary"
                                                         data-toggle="dropdown" type="button">العمليات <i class="fas fa-caret-down ml-1"></i></button>
                                                         <div class="dropdown-menu tx-3">
                                                             <a class="dropdown-item" href="{{url('edit_invoice')}}/{{$inv->id}}">تعديل</a>
-                                                            <a class="dropdown-item" href="#">Another action</a>
-                                                            <a class="dropdown-item" href="#">Something else here</a>
+                                                            <a class="btn btn-outline-danger dropdown-item " data-effect="effect-scale"
+                                                            data-id="{{ $inv->id }}" data-invnumber="{{$inv->invoice_number}}" data-toggle="modal" data-target="#modaldemo7"
+                                                            title="حذف"><i class="las la-trash"> حذف </i></a>
+                                                            <a class="dropdown-item" href="{{url('status_invoice')}}/{{$inv->id}}">تغيير الحاله</a>
                                                         </div>
                                                     </div>
                                                     </td>
@@ -126,6 +145,30 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                    <!-- delete -->
+<div class="modal" id="modaldemo7">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content modal-content-demo">
+            <div class="modal-header">
+                <h6 class="modal-title">حذف القسم</h6><button aria-label="Close" class="close" data-dismiss="modal"
+                    type="button"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <form action="{{ route('invoices.destroy', $inv->id) }}" method="post">
+                {{ method_field('delete') }}
+                {{ csrf_field() }}
+                <div class="modal-body">
+                    <p>هل انت متاكد من عملية الحذف ؟</p><br>
+                    <input type="hidden" name="id" id="id" value="">
+                    <input class="form-control" name="invnumber" id="invnumber" type="text" readonly>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
+                    <button type="submit" class="btn btn-danger">تاكيد</button>
+                </div>
+        </div>
+        </form>
+    </div>
+</div>
                                 </div>
                             </div>
                         </div>
@@ -195,5 +238,16 @@
 
     });
 
+</script>
+<script>
+    $('#modaldemo7').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget)
+        var id = button.data('id')
+        var invnumber = button.data('invnumber')
+        var modal = $(this)
+
+        modal.find('.modal-body #id').val(id);
+        modal.find('.modal-body #invnumber').val(invnumber);
+    })
 </script>
 @endsection

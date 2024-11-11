@@ -7,6 +7,7 @@ use App\Models\section;
 use App\Models\invoice2;
 use App\Models\invoiceDetail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -93,9 +94,12 @@ class Invoice2Controller extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(invoice2 $invoice2)
+    public function show($id)
     {
-        //
+        $invoice=invoice2::where('id',$id)->first();
+        $section= section::all();
+
+        return view('invoices.status_invoice',compact('invoice','section'));
     }
 
     /**
@@ -138,10 +142,23 @@ class Invoice2Controller extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(invoice2 $invoice2)
+    public function destroy(Request $request)
     {
-        //
+        $id=$request->id;
+        $inv=invoice2::where('id',$id);
+        $Details=invoices_attachment::where('invoice_id',$id);
+
+        $Details->delete();
+
+        if (!empty($Details->invoice_number)) {
+            Storage::disk('public_uploads')->deleteDirectory($Details->invoice_number);
+        }
+        $inv->forceDelete();
+        session()->flash('delete','تم حزف القسم ');
+        return redirect('/invoices');
     }
+
+
     // public function getproducts($id)
     // {
     //     $products = DB::table("products")->where("section_id", $id)->pluck("product_name", "id");
@@ -153,4 +170,44 @@ class Invoice2Controller extends Controller
     return response()->json($products);
 }
 
+public function status_update($id,Request $request)
+{
+    $invoice=invoice2::findOrFail($id);
+    // return $request;
+
+    if ($request->status === 'مدفوعه') {
+        $invoice->update([
+            'status' => 'مدفوعه',
+            'value_status' => 1,
+        ]);
+        invoiceDetail::create([
+            'id_invoice' => $request->invoice_id,
+            'invoice_number' => $request->invoice_number,
+            'product' => $request->product,
+            'section' => $request->section_id,
+            'status' => 'مدفوعه',
+            'value_status' => 1,
+            'note' => $request->note,
+            'user' => Auth::user()->name,
+        ]);
+    } else {
+        $invoice->update([
+            'status' => 'مدفوعه جزئيا',
+            'value_status' => 3,
+        ]);
+        invoiceDetail::create([
+            'id_invoice' => $request->invoice_id,
+            'invoice_number' => $request->invoice_number,
+            'product' => $request->product,
+            'section' => $request->section_id,
+            'status' => 'مدفوعه جزئيا',
+            'value_status' => 3,
+            'note' => $request->note,
+            'user' => Auth::user()->name,
+        ]);
+    }
+
+session()->flash('status','تم تغيير الحاله بنجاح');
+return redirect('/invoices');
+}
 }
