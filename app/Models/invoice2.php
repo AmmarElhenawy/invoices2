@@ -4,10 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class invoice2 extends Model
 {
+    use HasFactory, SoftDeletes;
+
     protected $fillable=[
         'invoice_number',
         'invoice_date',
@@ -23,6 +27,7 @@ class invoice2 extends Model
         'status',
         'value_status',
         'note',
+        'deleted_at',
     ];
     public function sec_id(): BelongsTo
     {

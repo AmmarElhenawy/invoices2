@@ -8,6 +8,7 @@ use App\Models\invoice2;
 use App\Models\invoiceDetail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -19,6 +20,8 @@ class Invoice2Controller extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    use SoftDeletes;
     public function index()
     {
         $invoice=invoice2::all();
@@ -145,17 +148,27 @@ class Invoice2Controller extends Controller
     public function destroy(Request $request)
     {
         $id=$request->id;
-        $inv=invoice2::where('id',$id);
-        $Details=invoices_attachment::where('invoice_id',$id);
+        $inv=invoice2::where('id',$id)->first();
+        $Details=invoices_attachment::where('invoice_id',$id)->first();
+        $id_page=$request->id_page;
 
-        $Details->delete();
 
-        if (!empty($Details->invoice_number)) {
-            Storage::disk('public_uploads')->deleteDirectory($Details->invoice_number);
-        }
+        if (!$id_page==2) {
+            if (!empty($Details->invoice_number)) {
+                Storage::disk('public_uploads')->deleteDirectory($Details->invoice_number);
+            }
+
         $inv->forceDelete();
         session()->flash('delete','تم حزف القسم ');
         return redirect('/invoices');
+
+        }
+        else{
+            $inv->delete();
+            session()->flash('archive','تم ارشفه القسم ');
+            return redirect('/invoiceArchive');
+
+        }
     }
 
 
@@ -210,4 +223,21 @@ public function status_update($id,Request $request)
 session()->flash('status','تم تغيير الحاله بنجاح');
 return redirect('/invoices');
 }
+public function showPaid()
+{
+    $invoice=invoice2::where('value_status','1')->get();
+return view ('invoices.invoicePaid',compact('invoice'));
 }
+public function showUnPaid()
+{
+    $invoice=invoice2::where('value_status','2')->get();
+return view ('invoices.invoiceUnPaid',compact('invoice'));
+}
+public function partially()
+{
+    $invoice=invoice2::where('value_status','3')->get();
+
+return view ('invoices.invoicePartially',compact('invoice'));
+}
+}
+

@@ -26,9 +26,9 @@
     @section('content')
     <!-- row opened -->
     <div class="row row-sm">
-        @if (session()->has('delete'))
+        @if (session()->has('archive'))
 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <strong>{{session()->get('delete')}}</strong>
+    <strong>{{session()->get('archive')}}</strong>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -37,6 +37,15 @@
         @if (session()->has('status'))
 <div class="alert alert-success alert-dismissible fade show" role="alert">
     <strong>{{session()->get('status')}}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+
+        @if (session()->has('delete'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>{{session()->get('delete')}}</strong>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -129,17 +138,12 @@
 
                                                     <td>{{$inv->note}}</td>
                                                     <td><div class="dropdown dropup">
-                                                        <button aria-expanded="false" aria-haspopup="true" class=" ripple btn-secondary"
-                                                        data-toggle="dropdown" type="button">العمليات <i class="fas fa-caret-down ml-1"></i></button>
-                                                        <div class="dropdown-menu tx-3">
-                                                            <a class="dropdown-item" href="{{url('edit_invoice')}}/{{$inv->id}}">تعديل</a>
-                                                            <a class="btn btn-outline-danger dropdown-item " data-effect="effect-scale"
-                                                            data-id="{{ $inv->id }}" data-invnumber="{{$inv->invoice_number}}" data-toggle="modal" data-target="#modaldemo7"
-                                                            title="حذف"><i class="las la-trash"> حذف </i></a>
-                                                            <a class="dropdown-item" href="{{url('status_invoice')}}/{{$inv->id}}">تغيير الحاله</a>
-                                                            <a class="btn btn-outline-success dropdown-item " data-effect="effect-scale"
-                                                            data-id="{{ $inv->id }}" data-invnumber="{{$inv->invoice_number}}" data-toggle="modal" data-target="#modaldemo8"
-                                                            title="ارشفه" > ارشفه </a>
+                                                        <a class="btn btn-outline-success dropdown-item " data-effect="effect-scale"
+                                                        data-id="{{ $inv->id }}" data-invnumber="{{$inv->invoice_number}}" data-toggle="modal" data-target="#modaldemo8"
+                                                        title="ارشفه" > اعاده الفاتوره </a>
+                                                        <a class="btn btn-outline-danger dropdown-item " data-effect="effect-scale"
+                                                        data-id="{{ $inv->id }}" data-invnumber="{{$inv->invoice_number}}" data-toggle="modal" data-target="#modaldemo7"
+                                                        title="حذف"><i class="las la-trash"> حذف </i></a>
                                                         </div>
                                                     </div>
                                                     </td>
@@ -148,54 +152,54 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <!-- delete -->
-<div class="modal" id="modaldemo7">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content modal-content-demo">
-            <div class="modal-header">
-                <h6 class="modal-title">حذف القسم</h6><button aria-label="Close" class="close" data-dismiss="modal"
-                    type="button"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <form action="{{ route('invoices.destroy', $inv->id) }}" method="post">
-                {{ method_field('delete') }}
-                {{ csrf_field() }}
-                <div class="modal-body">
-                    <p>هل انت متاكد من عملية الحذف ؟</p><br>
-                    <input type="hidden" name="id" id="id" value="">
-                    <input class="form-control" name="invnumber" id="invnumber" type="text" readonly>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
-                    <button type="submit" class="btn btn-danger">تاكيد</button>
-                </div>
-        </div>
-        </form>
-    </div>
-</div>
-<div class="modal" id="modaldemo8">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content modal-content-demo">
-            <div class="modal-header">
-                <h6 class="modal-title"> ارشفه القسم</h6><button aria-label="Close" class="close" data-dismiss="modal"
-                    type="button"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <form action="{{ route('invoices.destroy', $inv->id) }}" method="post">
-                {{ method_field('delete') }}
-                {{ csrf_field() }}
-                <div class="modal-body">
-                    <p>هل انت متاكد من عملية الارشفه ؟</p><br>
-                    <input type="hidden" name="id" id="id" value="">
-                    <input type="hidden" name="id_page" id="id_page" value="2">
-                    <input class="form-control" name="invnumber" id="invnumber" type="text" readonly>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
-                    <button type="submit" class="btn btn-success">تاكيد</button>
-                </div>
-        </div>
-        </form>
-    </div>
-</div>
+                                    <div class="modal" id="modaldemo7">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content modal-content-demo">
+                                                <div class="modal-header">
+                                                    <h6 class="modal-title">حذف القسم</h6><button aria-label="Close" class="close" data-dismiss="modal"
+                                                        type="button"><span aria-hidden="true">&times;</span></button>
+                                                </div>
+                                                <form action="{{ route('invoicesArchive.destroy', $inv->id) }}" method="post">
+                                                    {{ method_field('delete') }}
+                                                    {{ csrf_field() }}
+                                                    <div class="modal-body">
+                                                        <p>هل انت متاكد من عملية الحذف ؟</p><br>
+                                                        <input type="hidden" name="id" id="id" value="">
+                                                        <input class="form-control" name="invnumber" id="invnumber" type="text" readonly>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
+                                                        <button type="submit" class="btn btn-danger">تاكيد</button>
+                                                    </div>
+                                            </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="modal" id="modaldemo8">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content modal-content-demo">
+                                                <div class="modal-header">
+                                                    <h6 class="modal-title"> اعاده الفاتوره</h6><button aria-label="Close" class="close" data-dismiss="modal"
+                                                        type="button"><span aria-hidden="true">&times;</span></button>
+                                                </div>
+                                                <form action="{{ route('invoicesArchive.update', $inv->id) }}" method="post">
+                                                    {{ method_field('PATCH') }}
+                                                    {{ csrf_field() }}
+                                                    <div class="modal-body">
+                                                        <p>هل انت متاكد من عملية اعاده الفاتوره ؟</p><br>
+                                                        <input type="hidden" name="id" id="id" value="">
+                                                        <input type="hidden" name="id_page" id="id_page" value="2">
+                                                        <input class="form-control" name="invnumber" id="invnumber" type="text" readonly>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
+                                                        <button type="submit" class="btn btn-success">تاكيد</button>
+                                                    </div>
+                                            </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>

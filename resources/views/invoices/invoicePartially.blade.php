@@ -100,10 +100,12 @@
                                                 @php
                                                     $i=0;
                                                 @endphp
+                                                @if ($invoices->isNotEmpty())
+
                                                 @foreach ($invoice as $inv)
                                                 @php
                                                     $i++;
-                                                @endphp
+                                                    @endphp
                                                 <tr>
                                                     <td>{{$i}}</td>
                                                     <td>{{$inv->invoice_number}}</td>
@@ -113,21 +115,23 @@
                                                     <td>
                                                         <a href="{{url ('invoiceDetail')}}/{{$inv->id}}"> {{$inv->sec_id->section_name}}</a>
                                                         </td>
-                                                    <td>{{$inv->discount}}</td>
-                                                    <td>{{$inv->rate_vat}}</td>
-                                                    <td>{{$inv->value_vat}}</td>
-                                                    <td>{{$inv->total}}</td>
-                                                    <td>
-                                                        @if($inv->value_status == 1)
+                                                        <td>{{$inv->discount}}</td>
+                                                        <td>{{$inv->rate_vat}}</td>
+                                                        <td>{{$inv->value_vat}}</td>
+                                                        <td>{{$inv->total}}</td>
+                                                        <td>
+                                                            @if($inv->value_status == 1)
                                                             <span class="text-success">{{ $inv->status }}</span>
-                                                        @elseif($inv->value_status == 2)
+                                                            @elseif($inv->value_status == 2)
                                                             <span class="text-danger">{{ $inv->status }}</span>
-                                                        @else
+                                                            @else
                                                             <span class="text-warning">{{ $inv->status }}</span>
+                                                            @endif
+                                                        </td>
+                                                        @else
+                                                            {{'لا يوجد فواتير'}}
                                                         @endif
-                                                    </td>
-
-                                                    <td>{{$inv->note}}</td>
+                                                        <td>{{$inv->note}}</td>
                                                     <td><div class="dropdown dropup">
                                                         <button aria-expanded="false" aria-haspopup="true" class=" ripple btn-secondary"
                                                         data-toggle="dropdown" type="button">العمليات <i class="fas fa-caret-down ml-1"></i></button>
@@ -137,9 +141,6 @@
                                                             data-id="{{ $inv->id }}" data-invnumber="{{$inv->invoice_number}}" data-toggle="modal" data-target="#modaldemo7"
                                                             title="حذف"><i class="las la-trash"> حذف </i></a>
                                                             <a class="dropdown-item" href="{{url('status_invoice')}}/{{$inv->id}}">تغيير الحاله</a>
-                                                            <a class="btn btn-outline-success dropdown-item " data-effect="effect-scale"
-                                                            data-id="{{ $inv->id }}" data-invnumber="{{$inv->invoice_number}}" data-toggle="modal" data-target="#modaldemo8"
-                                                            title="ارشفه" > ارشفه </a>
                                                         </div>
                                                     </div>
                                                     </td>
@@ -149,7 +150,7 @@
                                         </table>
                                     </div>
                                     <!-- delete -->
-<div class="modal" id="modaldemo7">
+{{-- <div class="modal" id="modaldemo7">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content modal-content-demo">
             <div class="modal-header">
@@ -171,31 +172,7 @@
         </div>
         </form>
     </div>
-</div>
-<div class="modal" id="modaldemo8">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content modal-content-demo">
-            <div class="modal-header">
-                <h6 class="modal-title"> ارشفه القسم</h6><button aria-label="Close" class="close" data-dismiss="modal"
-                    type="button"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <form action="{{ route('invoices.destroy', $inv->id) }}" method="post">
-                {{ method_field('delete') }}
-                {{ csrf_field() }}
-                <div class="modal-body">
-                    <p>هل انت متاكد من عملية الارشفه ؟</p><br>
-                    <input type="hidden" name="id" id="id" value="">
-                    <input type="hidden" name="id_page" id="id_page" value="2">
-                    <input class="form-control" name="invnumber" id="invnumber" type="text" readonly>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
-                    <button type="submit" class="btn btn-success">تاكيد</button>
-                </div>
-        </div>
-        </form>
-    </div>
-</div>
+</div> --}}
                                 </div>
                             </div>
                         </div>
@@ -268,17 +245,6 @@
 </script>
 <script>
     $('#modaldemo7').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget)
-        var id = button.data('id')
-        var invnumber = button.data('invnumber')
-        var modal = $(this)
-
-        modal.find('.modal-body #id').val(id);
-        modal.find('.modal-body #invnumber').val(invnumber);
-    })
-</script>
-<script>
-    $('#modaldemo8').on('show.bs.modal', function(event) {
         var button = $(event.relatedTarget)
         var id = button.data('id')
         var invnumber = button.data('invnumber')

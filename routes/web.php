@@ -7,6 +7,7 @@ use App\Http\Controllers\SectionController;
 use App\Http\Controllers\InvoiceDetailController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\InvoicesAttachmentController;
+use App\Http\Controllers\InvoiceArchiveController;
 use App\Http\Controllers\ProController;
 // use App\Http\Controllers\AdminController;
 // use App\Http\Controllers\HomeController;
@@ -24,6 +25,7 @@ Route::resource('invoices', Invoice2Controller::class);
 Route::resource('sections', SectionController::class);
 Route::resource('products', ProductsController::class);
 Route::resource('invoiceAttachment', InvoicesAttachmentController::class);
+Route::resource('invoiceArchive', InvoiceArchiveController::class);
 //error
 // Route::get('/section/{id}', 'Invoice2Controller@getproducts');
 
@@ -34,6 +36,13 @@ Route::get('/status_invoice/{id}', [Invoice2Controller::class, 'show']);
 Route::patch('invoices/update/{id}', [Invoice2Controller::class, 'update'])->name('invoices.update');
 Route::delete('invoices/destroy/{id}', [Invoice2Controller::class, 'destroy'])->name('invoices.destroy');
 Route::post('status_update/{id}', [Invoice2Controller::class, 'status_update'])->name('status_update');
+
+Route::get('/invoicePaid', [Invoice2Controller::class, 'showPaid']);
+Route::get('/invoiceUnPaid', [Invoice2Controller::class, 'showUnPaid']);
+Route::get('/partially', [Invoice2Controller::class, 'partially']);
+
+Route::patch('invoicesArchive/update/{id}', [InvoiceArchiveController::class, 'update'])->name('invoicesArchive.update');
+Route::delete('invoicesArchive/destroy/{id}', [InvoiceArchiveController::class, 'destroy'])->name('invoicesArchive.destroy');
 
 Route::get('/invoiceDetail/{id}', [InvoiceDetailController::class, 'edit']);
 Route::get('/view_file/{invoice_number}/{file_name}', [InvoiceDetailController::class, 'view_attach'])->name('view_file');
