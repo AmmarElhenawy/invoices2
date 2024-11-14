@@ -9,6 +9,9 @@ use App\Models\invoiceDetail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Notification;
+use App\Models\User;
+use App\Notifications\InvoicePaid;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -90,6 +93,11 @@ class Invoice2Controller extends Controller
             // $request->pic->move(public_path('attachments/',$invoice_number),$imageName);
             $image->move(public_path("attachments/$invoice_number"), $file_name);
         }
+        // email
+        $user=User::first();
+        Notification::send($user, new InvoicePaid($invoice_id));
+
+        // email
         session()-> flash('add','تم اضافه المنتج بنجاح');
         return redirect('invoices');
     }
@@ -238,6 +246,12 @@ public function partially()
     $invoice=invoice2::where('value_status','3')->get();
 
 return view ('invoices.invoicePartially',compact('invoice'));
+}
+public function print_show($id)
+{
+    $invoice=invoice2::where('id',$id)->first();
+
+return view ('invoices.invoiceTemp',compact('invoice'));
 }
 }
 

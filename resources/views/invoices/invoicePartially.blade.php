@@ -100,7 +100,6 @@
                                                 @php
                                                     $i=0;
                                                 @endphp
-                                                @if ($invoices->isNotEmpty())
 
                                                 @foreach ($invoice as $inv)
                                                 @php
@@ -128,9 +127,6 @@
                                                             <span class="text-warning">{{ $inv->status }}</span>
                                                             @endif
                                                         </td>
-                                                        @else
-                                                            {{'لا يوجد فواتير'}}
-                                                        @endif
                                                         <td>{{$inv->note}}</td>
                                                     <td><div class="dropdown dropup">
                                                         <button aria-expanded="false" aria-haspopup="true" class=" ripple btn-secondary"

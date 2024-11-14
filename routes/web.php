@@ -33,6 +33,7 @@ Route::get('/section/{id}', [Invoice2Controller::class, 'getproducts']);
 // Route::patch('/invoices/update', [Invoice2Controller::class, 'update']);
 Route::get('/edit_invoice/{id}', [Invoice2Controller::class, 'edit']);
 Route::get('/status_invoice/{id}', [Invoice2Controller::class, 'show']);
+Route::get('/invoiceTemp/{id}', [Invoice2Controller::class, 'print_show']);
 Route::patch('invoices/update/{id}', [Invoice2Controller::class, 'update'])->name('invoices.update');
 Route::delete('invoices/destroy/{id}', [Invoice2Controller::class, 'destroy'])->name('invoices.destroy');
 Route::post('status_update/{id}', [Invoice2Controller::class, 'status_update'])->name('status_update');

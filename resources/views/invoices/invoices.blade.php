@@ -140,6 +140,7 @@
                                                             <a class="btn btn-outline-success dropdown-item " data-effect="effect-scale"
                                                             data-id="{{ $inv->id }}" data-invnumber="{{$inv->invoice_number}}" data-toggle="modal" data-target="#modaldemo8"
                                                             title="ارشفه" > ارشفه </a>
+                                                            <a class="dropdown-item" href="{{url('invoiceTemp')}}/{{$inv->id}}">طباعة</a>
                                                         </div>
                                                     </div>
                                                     </td>
