@@ -6,15 +6,21 @@ use App\Http\Controllers\Invoice2Controller;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\InvoiceDetailController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\InvoicesAttachmentController;
 use App\Http\Controllers\InvoiceArchiveController;
 use App\Http\Controllers\ProController;
+use App\Http\Controllers\Exports;
 // use App\Http\Controllers\AdminController;
 // use App\Http\Controllers\HomeController;
 
+
+//copy with you in all projects
 Route::get('/', function () {
     return view('auth.login');
 });
+//with you in all projects
 
 
 
@@ -50,5 +56,11 @@ Route::get('/view_file/{invoice_number}/{file_name}', [InvoiceDetailController::
 Route::get('/download/{invoice_number}/{file_name}', [InvoiceDetailController::class, 'download_attach'])->name('download');
 Route::delete('delete_file', [InvoiceDetailController::class, 'destroy'])->name('delete_file');
 
+Route::group(['middleware' => ['auth']], function() {
+    Route::resource('roles', RoleController::class);
+    Route::resource('users', UserController::class);
+});
+//copy with you in all projects
 Route::get('/{page}', 'App\Http\Controllers\AdminController@index');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//with you in end  in all projects

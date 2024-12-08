@@ -2,6 +2,15 @@
 
 return [
 
+    // Maatwebsite\Excel\ExcelServiceProvider::class,
+    // 'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+
+    Maatwebsite\Excel\ExcelServiceProvider::class,
+
+
+    'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
